@@ -75,7 +75,7 @@ function App() {
           <div className="time">
             {time}
           </div>
-          
+
           <div className="presence">
             <div className="presence-dot"></div>
             <span>{presenceCount} રાઈડર</span>
@@ -89,7 +89,7 @@ function App() {
         {/* Main Title Center */}
         <main className="main-content">
           <h1 className="title">
-            રિક્ષા વાળા
+            રમણ ની રેકડી
           </h1>
         </main>
 
@@ -99,14 +99,14 @@ function App() {
             ધીમે ચલાવો, ગીત થોડું વધારે વાગવા દો.
           </p>
 
-          <QueuePanel 
-            isOpen={isQueueOpen} 
-            onClose={() => setIsQueueOpen(false)} 
+          <QueuePanel
+            isOpen={isQueueOpen}
+            onClose={() => setIsQueueOpen(false)}
             currentTitle={playbackState.title}
             onTrackSelect={(idx) => playVideoAt(idx)}
           />
 
-          <Player 
+          <Player
             isPaused={playbackState.isPaused}
             position={playbackState.position}
             duration={playbackState.duration}
