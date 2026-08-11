@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react'
-import { Disc } from 'lucide-react'
+import { Disc, Volume2 } from 'lucide-react'
 import { subscribeToPresence } from './lib/presence'
-import { initYouTubePlayer, togglePlay, seek, next, previous } from './lib/youtube'
+import { initYouTubePlayer, togglePlay, seek, next, previous, playVideoAt } from './lib/youtube'
 import type { YouTubePlaybackState } from './lib/youtube'
 import { Player } from './components/Player'
+import { QueuePanel } from './components/QueuePanel'
 
 function App() {
   const [time, setTime] = useState('');
@@ -16,6 +17,15 @@ function App() {
     artist: '...',
     videoId: ''
   });
+  const [isQueueOpen, setIsQueueOpen] = useState(false);
+
+  const playHorn = () => {
+    const audio = document.getElementById('hornAudio') as HTMLAudioElement;
+    if (audio) {
+      audio.currentTime = 0;
+      audio.play();
+    }
+  };
 
   useEffect(() => {
     const updateTime = () => {
@@ -45,6 +55,15 @@ function App() {
       {/* Background System */}
       <div className="background" />
 
+      {/* Horn Audio Element */}
+      <audio id="hornAudio" src="/horn.mp3" preload="auto" />
+
+      {/* Horn Button */}
+      <button className="horn-btn" onClick={playHorn}>
+        <Volume2 size={16} />
+        <span>હોર્ન વગાડો</span>
+      </button>
+
       {/* Hidden YouTube Iframe */}
       <div className="hidden-iframe-container">
         <div id="youtube-iframe-container"></div>
@@ -59,7 +78,7 @@ function App() {
           
           <div className="presence">
             <div className="presence-dot"></div>
-            <span>{presenceCount} રસ્તા પર</span>
+            <span>{presenceCount} રાઈડર</span>
           </div>
 
           <div className="icon-wrapper">
@@ -80,6 +99,13 @@ function App() {
             ધીમે ચલાવો, ગીત થોડું વધારે વાગવા દો.
           </p>
 
+          <QueuePanel 
+            isOpen={isQueueOpen} 
+            onClose={() => setIsQueueOpen(false)} 
+            currentTitle={playbackState.title}
+            onTrackSelect={(idx) => playVideoAt(idx)}
+          />
+
           <Player 
             isPaused={playbackState.isPaused}
             position={playbackState.position}
@@ -91,6 +117,8 @@ function App() {
             onSeek={seek}
             onNext={next}
             onPrev={previous}
+            isQueueOpen={isQueueOpen}
+            onToggleQueue={() => setIsQueueOpen(!isQueueOpen)}
           />
         </footer>
       </div>

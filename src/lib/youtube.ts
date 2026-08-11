@@ -42,6 +42,12 @@ export const initYouTubePlayer = (
             // event.data: 1 = playing, 2 = paused, 3 = buffering, 0 = ended
             if (event.data === window.YT.PlayerState.PLAYING) {
               startPolling(onStateChange);
+            } else if (event.data === window.YT.PlayerState.ENDED) {
+              // Loop current song continuously
+              if (player && player.seekTo) {
+                player.seekTo(0, true);
+                player.playVideo();
+              }
             }
             updateState(onStateChange);
           }
@@ -98,6 +104,7 @@ export const togglePlay = () => {
 export const seek = (seconds: number) => player?.seekTo?.(seconds, true);
 export const next = () => player?.nextVideo?.();
 export const previous = () => player?.previousVideo?.();
+export const playVideoAt = (index: number) => player?.playVideoAt?.(index);
 
 declare global {
   interface Window {

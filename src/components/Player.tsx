@@ -1,5 +1,5 @@
 import React from 'react';
-import { Play, Pause, SkipBack, SkipForward } from 'lucide-react';
+import { Play, Pause, SkipBack, SkipForward, List } from 'lucide-react';
 
 interface PlayerProps {
   isPaused: boolean;
@@ -12,6 +12,8 @@ interface PlayerProps {
   onSeek: (seconds: number) => void;
   onNext: () => void;
   onPrev: () => void;
+  isQueueOpen: boolean;
+  onToggleQueue: () => void;
 }
 
 const formatTime = (secondsTotal: number) => {
@@ -23,7 +25,7 @@ const formatTime = (secondsTotal: number) => {
 };
 
 export const Player: React.FC<PlayerProps> = ({ 
-  isPaused, position, duration, title, artist, videoId, onPlayPause, onSeek, onNext, onPrev 
+  isPaused, position, duration, title, artist, videoId, onPlayPause, onSeek, onNext, onPrev, isQueueOpen, onToggleQueue
 }) => {
   const artworkUrl = videoId 
     ? `https://img.youtube.com/vi/${videoId}/mqdefault.jpg`
@@ -78,6 +80,12 @@ export const Player: React.FC<PlayerProps> = ({
         </button>
         <button onClick={onNext}>
           <SkipForward size={16} fill="currentColor" />
+        </button>
+        <button 
+          onClick={onToggleQueue} 
+          style={{ marginLeft: '8px', color: isQueueOpen ? '#fff' : 'rgba(255,255,255,0.7)' }}
+        >
+          <List size={16} />
         </button>
       </div>
     </div>
